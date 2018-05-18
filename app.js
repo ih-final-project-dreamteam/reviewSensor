@@ -11,6 +11,10 @@ const path         = require('path');
 
 "lets try again"
 
+console.log("eleyni did this");
+
+
+
 mongoose.Promise = Promise;
 mongoose
   .connect('mongodb://localhost/server', {useMongoClient: true})
