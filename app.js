@@ -9,6 +9,7 @@ const mongoose     = require('mongoose');
 const logger       = require('morgan');
 const path         = require('path');
 
+"lets try again"
 
 console.log("eleyni did this");
 
@@ -58,5 +59,8 @@ app.locals.title = 'Express - Generated with IronGenerator';
 const index = require('./routes/index');
 app.use('/', index);
 
+
+
+console.log("deploy completed")
 
 module.exports = app;
