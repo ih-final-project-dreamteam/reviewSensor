@@ -20,7 +20,6 @@ const flash          = require("connect-flash");
 const cors           = require('cors');
 
 
-
 mongoose.Promise = Promise;
 mongoose
   .connect('mongodb://localhost/reviewSensor', {useMongoClient: true})
@@ -114,5 +113,8 @@ const authRouteVariableThing = require('./routes/auth-routes')
 
 app.use('/api', authRouteVariableThing);
 // conventional to use /api to prepend auth routes
+
+
+console.log("deploy completed")
 
 module.exports = app;
