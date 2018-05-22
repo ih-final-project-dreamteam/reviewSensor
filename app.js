@@ -50,7 +50,7 @@ app.use(require('node-sass-middleware')({
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static("path.join(__dirname, '/public')"));
 app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 // default value for title local
 app.locals.title = 'Express - Generated with IronGenerator';
@@ -99,19 +99,18 @@ app.use(passport.session());
 app.use(cors());
 
 
-// app.use(
-//   cors({
-//     credentials: true,                 // allow other domains to send cookies
-//     origin: ["http://localhost:4200"]  // these are the domains that are allowed
-//   })
-// );
+app.use(
+  cors({
+    credentials: true,                 // allow other domains to send cookies
+    origin: ["http://localhost:4200"]  // these are the domains that are allowed
+  })
+);
 
 
 const index = require('./routes/index');
-
 app.use('/', index);
-const authRouteVariableThing = require('./routes/auth-routes')
 
+const authRouteVariableThing = require('./routes/auth-routes')
 app.use('/api', authRouteVariableThing);
 // conventional to use /api to prepend auth routes
 
