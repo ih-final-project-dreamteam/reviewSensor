@@ -112,5 +112,10 @@ app.use('/', index);
 const authRouteVariableThing = require('./routes/auth-routes')
 app.use('/api', authRouteVariableThing);
 // conventional to use /api to prepend auth routes
+const hotelRoute = require('./routes/hotel-routes')
+app.use('/yelp', hotelRoute);
+
+console.log("deploy completed")
+
 
 module.exports = app;

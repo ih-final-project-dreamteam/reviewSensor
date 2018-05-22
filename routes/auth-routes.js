@@ -39,7 +39,9 @@ authRoutes.post("/signup", (req, res, next) => {
 
     const newUser = new User({
       username: username,
-      password: hashPass
+      password: hashPass,
+      userFname: userFname,
+      userLname: userLname
     });
 
     newUser.save((err) => {
@@ -67,29 +69,72 @@ authRoutes.post("/signup", (req, res, next) => {
 // ^ROUTES WILL BE THROUGH ANGULAR SO WE DON'T NEED THIS ANYMORE
 
 // LOGIN
+// authRoutes.post('/login', (req, res, next) => {
+//   passport.authenticate('local', (err, theUser, failureDetails) => {
+//    console.log('user ============================================', req.session)
+//    console.log('failure >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', failureDetails)
+//    console.log('err ++++++++++++++++++++++++++++++++++++++++++++++', err)
+//     if (err) {
+//       res.status(500).json({ message: 'Something went wrong' });
+//       return;
+//     }
+
+//     if (!theUser) {
+//       res.status(401).json(failureDetails);
+//       return;
+//     }
+
+//     req.login(theUser, (err) => {
+//       if (err) {
+//         res.status(500).json({ message: 'Something went wrong' });
+//         return;
+//       }
+
+//       // We are now logged in (notice req.user)
+//       res.status(200).json(req.user);
+//     });
+//   })(req, res, next);
+// });
+
+
+
+
 authRoutes.post('/login', (req, res, next) => {
-  passport.authenticate('local', (err, theUser, failureDetails) => {
-    if (err) {
-      res.status(500).json({ message: 'Something went wrong' });
+  // console.log(req.body.username)
+  User.findOne({ username: req.body.username })
+  .then((userFromDb) => {
+    console.log("user from db =====>>>>>======>>>>>=====>>>>>>", userFromDb)
+    if (userFromDb === null) {
+      res.status(400).json({ message: "Username is invalid" });
       return;
     }
+    const isPasswordGood = bcrypt.compareSync(req.body.password, userFromDb.password);
 
-    if (!theUser) {
-      res.status(401).json(failureDetails);
+    console.log(userFromDb);
+
+    if (isPasswordGood === false) {
+      res.status(400).json({ message: "Password is invalid" });
       return;
     }
+    req.login(userFromDb, (err) => {
+      // clear the "encryptedPassword" before sending the user userInfo// (otherwise it's a security risk)
+      userFromDb.password = undefined;
 
-    req.login(theUser, (err) => {
-      if (err) {
-        res.status(500).json({ message: 'Something went wrong' });
-        return;
-      }
-
-      // We are now logged in (notice req.user)
-      res.status(200).json(req.user);
+        res.status(200).json({
+          isLoggedIn: true,
+          userInfo: userFromDb
+        });
     });
-  })(req, res, next);
-});
+  })
+  .catch((err) => {
+    console.log("POST/login ERROR!");
+    console.log(err);
+
+    res.status(500).json({ error: "Log in database error" });
+  });
+});  // Post LogIn
+
+
 
 
 // LOGOUT
