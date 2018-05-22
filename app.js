@@ -98,23 +98,19 @@ app.use(passport.session());
 app.use(cors());
 
 
-// app.use(
-//   cors({
-//     credentials: true,                 // allow other domains to send cookies
-//     origin: ["http://localhost:4200"]  // these are the domains that are allowed
-//   })
-// );
+app.use(
+  cors({
+    credentials: true,                 // allow other domains to send cookies
+    origin: ["http://localhost:4200"]  // these are the domains that are allowed
+  })
+);
 
 
 const index = require('./routes/index');
-
 app.use('/', index);
-const authRouteVariableThing = require('./routes/auth-routes')
 
+const authRouteVariableThing = require('./routes/auth-routes')
 app.use('/api', authRouteVariableThing);
 // conventional to use /api to prepend auth routes
-
-
-console.log("deploy completed")
 
 module.exports = app;
