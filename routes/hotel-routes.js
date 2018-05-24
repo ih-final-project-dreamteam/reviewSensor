@@ -1,17 +1,17 @@
-// const express     = require("express");
-// const yelpRoutes  = express.Router();
-// const request = require('request');
-// const cheerio = require('cheerio');
+const express     = require("express");
+const yelpRoutes  = express.Router();
+const request = require('request');
+const cheerio = require('cheerio');
 
 
-// //grab searchTerm from front end and pass into API 
-// yelpRoutes.get('/:searchTerm',(req,res,next) => {
+//grab searchTerm from front end and pass into API 
+yelpRoutes.get('/:searchTerm',(req,res,next) => {
 
-// 'use strict';
+'use strict';
 
-// const yelp = require('yelp-fusion');
+const yelp = require('yelp-fusion');
  
-// const client = yelp.client(process.env.apiKey);
+const client = yelp.client(process.env.apiKey);
 
 
 // when using the yelp API only search for hotels
@@ -25,7 +25,7 @@ client.search({
   term: term,
   location: req.params.searchTerm,
   sort_by: "review_count",
-  limit: 5
+  limit: 3
 }).then(response => {
 
     console.log("there are "+response.jsonBody.businesses.length+" hotels")
@@ -91,7 +91,7 @@ client.search({
   console.log(e);
 });
 
-// });
+});
  
 // module.exports = yelpRoutes;
 

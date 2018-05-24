@@ -24,13 +24,13 @@ authRoutes.post("/signup", (req, res, next) => {
   const userTrips = req.body.userTrips;
 
   if (username === "" || password === "") {
-    res.status(400).json({ message: 'Please indicate username and password' });
+    res.status(400).json({ message: 'Please indicate your email and password' });
     return;
   }
 
   User.findOne({ username:username }, "username", (err, user) => {
     if (user !== null) {
-      res.status(400).json({ message: 'Sorry, that username already exists' });
+      res.status(400).json({ message: 'An account already exists for that email. Log in.' });
       return;
     }
 
@@ -63,67 +63,32 @@ authRoutes.post("/signup", (req, res, next) => {
 });
 
 
-// authRoutes.get("/login", (req, res, next) => {
-//   res.render("auth/login", { "message": req.flash("error") });
-// });
-// ^ROUTES WILL BE THROUGH ANGULAR SO WE DON'T NEED THIS ANYMORE
-
-// LOGIN
-// authRoutes.post('/login', (req, res, next) => {
-//   passport.authenticate('local', (err, theUser, failureDetails) => {
-//    console.log('user ============================================', req.session)
-//    console.log('failure >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', failureDetails)
-//    console.log('err ++++++++++++++++++++++++++++++++++++++++++++++', err)
-//     if (err) {
-//       res.status(500).json({ message: 'Something went wrong' });
-//       return;
-//     }
-
-//     if (!theUser) {
-//       res.status(401).json(failureDetails);
-//       return;
-//     }
-
-//     req.login(theUser, (err) => {
-//       if (err) {
-//         res.status(500).json({ message: 'Something went wrong' });
-//         return;
-//       }
-
-//       // We are now logged in (notice req.user)
-//       res.status(200).json(req.user);
-//     });
-//   })(req, res, next);
-// });
-
-
-
-
 authRoutes.post('/login', (req, res, next) => {
-  // console.log(req.body.username)
+  // console.log("post login: ", req.body)
   User.findOne({ username: req.body.username })
   .then((userFromDb) => {
-    console.log("user from db =====>>>>>======>>>>>=====>>>>>>", userFromDb)
+    // console.log("user from db =====>>>>>======>>>>>=====>>>>>>", userFromDb)
     if (userFromDb === null) {
-      res.status(400).json({ message: "Username is invalid" });
+      res.status(400).json({ message: "That email is invalid. Try again." });
       return;
     }
     const isPasswordGood = bcrypt.compareSync(req.body.password, userFromDb.password);
 
-    console.log(userFromDb);
+    // console.log(userFromDb);
 
     if (isPasswordGood === false) {
-      res.status(400).json({ message: "Password is invalid" });
+      res.status(400).json({ message: "That password is invalid. Try again." });
       return;
     }
     req.login(userFromDb, (err) => {
       // clear the "encryptedPassword" before sending the user userInfo// (otherwise it's a security risk)
       userFromDb.password = undefined;
-
-        res.status(200).json({
-          isLoggedIn: true,
-          userInfo: userFromDb
-        });
+// console.log("do i have user here: ", userFromDb)
+        res.status(200).json(
+          // isLoggedIn: true,
+          // userInfo: userFromDb
+          userFromDb
+        );
     });
   })
   .catch((err) => {
@@ -146,54 +111,45 @@ authRoutes.post('/logout', (req, res, next) => {
 
 // LOGGED IN
 authRoutes.get('/loggedin', (req, res, next) => {
+  console.log("user in backend: ", req.user);
   if (req.isAuthenticated()) {
     res.status(200).json(req.user);
     return;
   }
-
-  res.status(403).json({ message: 'Unauthorized' });
+    res.status(403).json({ message: 'Unauthorized' });
 });
 
 
-function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  } else {
+// function ensureAuthenticated(req, res, next) {
+//   if (req.isAuthenticated()) {
+//     return next();
+//   } else {
 
-    res.redirect('/login')
-  }
-}
+//     res.redirect('/login')
+//   }
+// }
 
-function checkRoles(role) {
-  return function(req, res, next) {
-    if (req.isAuthenticated() && req.user.role === role) {
-      return next();
-    } else {
-      res.redirect('/')
-    }
-  }
-}
+// function checkRoles(role) {
+//   return function(req, res, next) {
+//     if (req.isAuthenticated() && req.user.role === role) {
+//       return next();
+//     } else {
+//       res.redirect('/')
+//     }
+//   }
+// }
 
 
 // PRIVATE ROUTE
-authRoutes.get('/private', (req, res, next) => {
-  if (req.isAuthenticated()) {
-    res.json({ message: 'This is a private message' });
-    return;
-  }
+// authRoutes.get('/private', (req, res, next) => {
+//   if (req.isAuthenticated()) {
+//     res.json({ message: 'This is a private message' });
+//     return;
+//   }
 
-  res.status(403).json({ message: 'Unauthorized' });
-});
+//   res.status(403).json({ message: 'Unauthorized' });
+// });
 
 
-// authRoutes.get("/auth/google", passport.authenticate("google", {
-//   scope: ["https://www.googleapis.com/auth/plus.login",
-//           "https://www.googleapis.com/auth/plus.profile.emails.read"]
-// }));
-
-// authRoutes.get("/auth/google/callback", passport.authenticate("google", {
-//   failureRedirect: "/",
-//   successRedirect: "/private-page"
-// }));
 
 module.exports = authRoutes;
