@@ -22,7 +22,7 @@ client.search({
   term: term,
   location: req.params.searchTerm,
   sort_by: "review_count",
-  limit: 5
+  limit: 2
 }).then(response => {
 
     console.log("there are "+response.jsonBody.businesses.length+" hotels")
