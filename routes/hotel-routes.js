@@ -1,7 +1,7 @@
 const express     = require("express");
 const yelpRoutes  = express.Router();
-const request = require('request');
-const cheerio = require('cheerio');
+const request = require('request'); // needed for webscraping reviews
+const cheerio = require('cheerio'); // needed for webscraping reviews
 
 
 //grab searchTerm from front end and pass into API 
@@ -17,8 +17,6 @@ const client = yelp.client(process.env.apiKey);
 const term = "hotel";
 // array of objects to pass to json
 const hotelsInfo = [];
-const sentiments = [];
-
 // set parameters for yelp API search, response.jsonBody.businesses is an object of each hotel
 client.search({
   term: term,
@@ -32,6 +30,7 @@ client.search({
     response.jsonBody.businesses.forEach(hotel => {
         // define an empty object that we will use to populate all our hotel info
         const oneHotelInfo = {
+            searchTerm: req.params.searchTerm,
             id: '',
             url: '',
             name: '',
@@ -83,15 +82,17 @@ client.search({
         })
        
     });
-    // give the scrape enough time to populate reviews, wait 3.1 seconds to load the page.
-    setTimeout(function () {res.json(hotelsInfo);  },3100)
+    // give the scrape enough time to populate reviews, wait 3.5 seconds to load the page.
+    setTimeout(function () {res.json(hotelsInfo);  },3500)
     
 }).catch(e => {
   console.log(e);
 });
 
-});
+});// end of yelpRoute
  
+
+
 module.exports = yelpRoutes;
 
   
