@@ -49,7 +49,7 @@ app.use(require('node-sass-middleware')({
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static("path.join(__dirname, '/public')"));
 app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 // default value for title local
 app.locals.title = 'Express - Generated with IronGenerator';
@@ -112,8 +112,8 @@ app.use('/', index);
 const authRouteVariableThing = require('./routes/auth-routes')
 app.use('/api', authRouteVariableThing);
 // conventional to use /api to prepend auth routes
-const hotelRoute = require('./routes/hotel-routes')
-app.use('/yelp', hotelRoute);
+// const hotelRoute = require('./routes/hotel-routes')
+// app.use('/yelp', hotelRoute);
 
 console.log("deploy completed")
 

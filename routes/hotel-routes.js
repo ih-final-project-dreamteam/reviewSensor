@@ -1,17 +1,18 @@
-const express     = require("express");
-const yelpRoutes  = express.Router();
-const request = require('request');
-const cheerio = require('cheerio');
+// const express     = require("express");
+// const yelpRoutes  = express.Router();
+// const request = require('request');
+// const cheerio = require('cheerio');
 
 
-//grab searchTerm from front end and pass into API 
-yelpRoutes.get('/:searchTerm',(req,res,next) => {
+// //grab searchTerm from front end and pass into API 
+// yelpRoutes.get('/:searchTerm',(req,res,next) => {
 
-'use strict';
+// 'use strict';
 
-const yelp = require('yelp-fusion');
+// const yelp = require('yelp-fusion');
  
-const client = yelp.client(process.env.apiKey);
+// const client = yelp.client(process.env.apiKey);
+
 
 // when using the yelp API only search for hotels
 const term = "hotel";
@@ -90,9 +91,9 @@ client.search({
   console.log(e);
 });
 
-});
+// });
  
-module.exports = yelpRoutes;
+// module.exports = yelpRoutes;
 
   
                 // // IBM watson calls for natural language understanding
