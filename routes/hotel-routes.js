@@ -1,9 +1,7 @@
-
 const express     = require("express");
 const yelpRoutes  = express.Router();
 const request = require('request'); // needed for webscraping reviews
 const cheerio = require('cheerio'); // needed for webscraping reviews
-
 
 
 //grab searchTerm from front end and pass into API 
