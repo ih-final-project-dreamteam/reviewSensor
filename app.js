@@ -109,13 +109,12 @@ app.use(
 const index = require('./routes/index');
 app.use('/', index);
 
-const authRouteVariableThing = require('./routes/auth-routes')
-app.use('/api', authRouteVariableThing);
+const authRoute = require('./routes/auth-routes')
+app.use('/api', authRoute);
 // conventional to use /api to prepend auth routes
-// const hotelRoute = require('./routes/hotel-routes')
-// app.use('/yelp', hotelRoute);
-
-console.log("deploy completed")
-
+const yelpRoute = require('./routes/hotel-routes')
+app.use('/yelp', yelpRoute);
+const watsonRoute = require('./routes/watson-routes')
+app.use('/watson', watsonRoute);
 
 module.exports = app;

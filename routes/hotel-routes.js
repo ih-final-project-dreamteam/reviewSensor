@@ -1,7 +1,9 @@
+
 const express     = require("express");
 const yelpRoutes  = express.Router();
-const request = require('request');
-const cheerio = require('cheerio');
+const request = require('request'); // needed for webscraping reviews
+const cheerio = require('cheerio'); // needed for webscraping reviews
+
 
 
 //grab searchTerm from front end and pass into API 
@@ -18,14 +20,12 @@ const client = yelp.client(process.env.apiKey);
 const term = "hotel";
 // array of objects to pass to json
 const hotelsInfo = [];
-const sentiments = [];
-
 // set parameters for yelp API search, response.jsonBody.businesses is an object of each hotel
 client.search({
   term: term,
   location: req.params.searchTerm,
   sort_by: "review_count",
-  limit: 3
+  limit: 1
 }).then(response => {
 
     console.log("there are "+response.jsonBody.businesses.length+" hotels")
@@ -33,6 +33,7 @@ client.search({
     response.jsonBody.businesses.forEach(hotel => {
         // define an empty object that we will use to populate all our hotel info
         const oneHotelInfo = {
+            searchTerm: req.params.searchTerm,
             id: '',
             url: '',
             name: '',
@@ -43,7 +44,9 @@ client.search({
             price: '',
             location: [],
             display_phone: '',
-            watson_sentiment: []
+            watson_sentiment: [],
+            keywords: [],
+            emotions: []
         };
         // start populating hotel info into our object
         oneHotelInfo.id = hotel.id;
@@ -74,7 +77,6 @@ client.search({
                     
                     var data = $(this);
                     oneHotelInfo.reviews.push(data.first().text())
-                    
                 }) // end scrape 
                 
                 // load up our array of hotel objects with all the info we need
@@ -84,16 +86,20 @@ client.search({
         })
        
     });
-    // give the scrape enough time to populate reviews, wait 3.1 seconds to load the page.
-    setTimeout(function () {res.json(hotelsInfo);  },3100)
+    // give the scrape enough time to populate reviews, wait 3.5 seconds to load the page.
+    setTimeout(function () {res.json(hotelsInfo);  }, 3500)
     
 }).catch(e => {
   console.log(e);
 });
 
-});
+
+});// end of yelpRoute
  
-// module.exports = yelpRoutes;
+
+
+module.exports = yelpRoutes;
+
 
   
                 // // IBM watson calls for natural language understanding
