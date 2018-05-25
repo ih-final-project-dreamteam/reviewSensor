@@ -22,7 +22,7 @@ client.search({
   term: term,
   location: req.params.searchTerm,
   sort_by: "review_count",
-  limit: 2
+  limit: 1
 }).then(response => {
 
     console.log("there are "+response.jsonBody.businesses.length+" hotels")
@@ -41,7 +41,9 @@ client.search({
             price: '',
             location: [],
             display_phone: '',
-            watson_sentiment: []
+            watson_sentiment: [],
+            keywords: [],
+            emotions: []
         };
         // start populating hotel info into our object
         oneHotelInfo.id = hotel.id;
@@ -72,7 +74,6 @@ client.search({
                     
                     var data = $(this);
                     oneHotelInfo.reviews.push(data.first().text())
-                    
                 }) // end scrape 
                 
                 // load up our array of hotel objects with all the info we need
@@ -83,7 +84,7 @@ client.search({
        
     });
     // give the scrape enough time to populate reviews, wait 3.5 seconds to load the page.
-    setTimeout(function () {res.json(hotelsInfo);  },3500)
+    setTimeout(function () {res.json(hotelsInfo);  }, 3500)
     
 }).catch(e => {
   console.log(e);

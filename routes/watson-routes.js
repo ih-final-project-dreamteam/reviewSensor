@@ -19,6 +19,7 @@ watsonRoutes.get('/:searchTerm/:id', (req, res, next) => {
         .then(eachHotel => {
             // check ID for the one clicked
             myHotel = eachHotel.data.filter(oneHotel => oneHotel.id === hotelID)
+            
             if (myHotel){
             // loop through reviews to pass to watson and retrieve sentiment of each.
             myHotel[0].reviews.forEach(oneReview => {
@@ -45,13 +46,48 @@ watsonRoutes.get('/:searchTerm/:id', (req, res, next) => {
                
 
             }); // end of reviews forEach
+            const consolidatedReview = myHotel[0].reviews.join(' ');
+            var parameters = {
+                'text': consolidatedReview,
+                'features': {
+                    'keywords': {},
+                    'emotion': {}
+                }
+            }
+
+            natural_language_understanding.analyze(parameters, function (err, response) {
+                if (err)
+                    console.log('error:', err);
+                else
+
+                    // displays what watson feels on each review to terminal
+                    //console.log(JSON.stringify(response, null, 2));
+                    myHotel[0].keywords = response.keywords;
+                    myHotel[0].emotions = response.emotion.document.emotion;
+                    console.log(myHotel[0].emotions);
+                    
+                //console.log(oneHotelInfo);
+
+            });
+
         } // end of checking ID
+        setTimeout(function () {myHotel[0].watson_sentiment = reviewAnalysis(myHotel[0].watson_sentiment)},950)
         setTimeout(function () {res.json(myHotel);},1000)
         }) // end of axios
-        
+       
+       
  
 });// end of watson route
 
+function reviewAnalysis(reviewsToAnalyze) {
+    const negativeReviews = reviewsToAnalyze.filter(negativeReview => negativeReview === "negative");
+    const neutralReviews = reviewsToAnalyze.filter(neutralReview => neutralReview === "neutral");
+    const negativePercentage = negativeReviews.length / reviewsToAnalyze.length;
+    const neutralPercentage = neutralReviews.length / reviewsToAnalyze.length;
+    const positivePercentage = (reviewsToAnalyze.length - (negativeReviews.length + neutralReviews.length)) / reviewsToAnalyze.length;
+    const analysis = [positivePercentage,negativePercentage,neutralPercentage];
+    return analysis;
+}
 module.exports = watsonRoutes;
 
  // // IBM watson calls for natural language understanding
