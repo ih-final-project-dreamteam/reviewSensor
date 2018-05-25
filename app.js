@@ -70,16 +70,16 @@ passport.deserializeUser((id, cb) => {
 
 passport.use(new LocalStrategy({
   passReqToCallback: true
-}, (req, userEmail, password, next) => {
-  User.findOne({ userEmail }, (err, user) => {
+}, (req, username, password, next) => {
+  User.findOne({ username }, (err, user) => {
     if (err) {
       return next(err);
     }
     if (!user) {
-      return next(null, false, { message: "Incorrect email" });
+      return next(null, false, { message: "That email does not exist. Try again." });
     }
     if (!bcrypt.compareSync(password, user.password)) {
-      return next(null, false, { message: "Incorrect password" });
+      return next(null, false, { message: "That password is incorrect. Try again." });
     }
 
     return next(null, user);
@@ -95,7 +95,7 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(cors());
+// app.use(cors());
 
 
 app.use(

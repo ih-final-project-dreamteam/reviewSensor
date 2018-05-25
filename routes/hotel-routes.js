@@ -1,19 +1,17 @@
-
 const express     = require("express");
 const yelpRoutes  = express.Router();
 const request = require('request'); // needed for webscraping reviews
 const cheerio = require('cheerio'); // needed for webscraping reviews
 
 
+//grab searchTerm from front end and pass into API 
+yelpRoutes.get('/:searchTerm',(req,res,next) => {
 
-// //grab searchTerm from front end and pass into API 
-// yelpRoutes.get('/:searchTerm',(req,res,next) => {
+'use strict';
 
-// 'use strict';
-
-// const yelp = require('yelp-fusion');
+const yelp = require('yelp-fusion');
  
-// const client = yelp.client(process.env.apiKey);
+const client = yelp.client(process.env.apiKey);
 
 
 // when using the yelp API only search for hotels
