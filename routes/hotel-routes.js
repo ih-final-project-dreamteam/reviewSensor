@@ -1,17 +1,20 @@
+
 const express     = require("express");
 const yelpRoutes  = express.Router();
 const request = require('request'); // needed for webscraping reviews
 const cheerio = require('cheerio'); // needed for webscraping reviews
 
 
-//grab searchTerm from front end and pass into API 
-yelpRoutes.get('/:searchTerm',(req,res,next) => {
 
-'use strict';
+// //grab searchTerm from front end and pass into API 
+// yelpRoutes.get('/:searchTerm',(req,res,next) => {
 
-const yelp = require('yelp-fusion');
+// 'use strict';
+
+// const yelp = require('yelp-fusion');
  
-const client = yelp.client(process.env.apiKey);
+// const client = yelp.client(process.env.apiKey);
+
 
 // when using the yelp API only search for hotels
 const term = "hotel";
@@ -90,11 +93,13 @@ client.search({
   console.log(e);
 });
 
+
 });// end of yelpRoute
  
 
 
 module.exports = yelpRoutes;
+
 
   
                 // // IBM watson calls for natural language understanding
