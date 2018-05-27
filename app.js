@@ -116,5 +116,7 @@ const yelpRoute = require('./routes/hotel-routes')
 app.use('/yelp', yelpRoute);
 const watsonRoute = require('./routes/watson-routes')
 app.use('/watson', watsonRoute);
+const crudRoute = require('./routes/crud-routes')
+app.use('/crud', crudRoute);
 
 module.exports = app;
