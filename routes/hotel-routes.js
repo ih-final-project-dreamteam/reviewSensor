@@ -85,7 +85,7 @@ client.search({
        
     });
     // give the scrape enough time to populate reviews, wait 3.5 seconds to load the page.
-    setTimeout(function () {res.json(hotelsInfo);  }, 3700)
+    setTimeout(function () {res.json(hotelsInfo);  },7000)
     
 }).catch(e => {
   console.log(e);

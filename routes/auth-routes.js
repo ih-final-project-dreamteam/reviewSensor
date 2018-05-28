@@ -122,7 +122,7 @@ authRoutes.get('/loggedin', (req, res, next) => {
 
 
 authRoutes.get('/dashboard/:userId', (req, res, next) => {
-  console.log('sdajfldasjflkjdsaklfjklasdjlkjfapijoiraejwoirjoiwjoiwqjoiajsoifjaodgsd inside dashboard route!!')
+ 
   setTimeout(function () {
   Trip.find({userId: req.params.userId})
   .then((listOfUserTrips)=>{
