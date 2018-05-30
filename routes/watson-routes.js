@@ -2,9 +2,10 @@ const express = require("express");
 const watsonRoutes = express.Router();
 const axios = require("axios"); // used to call our own hotel list API
 
-watsonRoutes.get('/:searchTerm/:id', (req, res, next) => {
-    searchTerm = req.params.searchTerm;
-    hotelID = req.params.id;
+watsonRoutes.get('/:searchTerm/:price/:id', (req, res, next) => {
+    const searchTerm = req.params.searchTerm;
+    const price = req.params.price
+    const hotelID = req.params.id;
     var myHotel = [];
     console.log('inside route',hotelID,searchTerm)
     // declare watson NLU info
@@ -15,7 +16,7 @@ watsonRoutes.get('/:searchTerm/:id', (req, res, next) => {
         'version': '2018-03-16'
     });
     // make an axios get to our api
-    axios.get(`http://localhost:3000/yelp/${searchTerm}`)
+    axios.get(`http://localhost:3000/yelp/${searchTerm}/${price}`)
         .then(eachHotel => {
             // check ID for the one clicked
             myHotel = eachHotel.data.filter(oneHotel => oneHotel.id === hotelID)
