@@ -62,8 +62,15 @@ watsonRoutes.get('/:searchTerm/:id', (req, res, next) => {
 
                     // displays what watson feels on each review to terminal
                     //console.log(JSON.stringify(response, null, 2));
+                    // displays what watson feels on each review to terminal
+                    //console.log(JSON.stringify(response, null, 2));
                     myHotel[0].keywords = response.keywords;
                     myHotel[0].emotions = response.emotion.document.emotion;
+                    myHotel[0].emotions.sadness = Math.round(myHotel[0].emotions.sadness * 100);
+                    myHotel[0].emotions.joy = Math.round(myHotel[0].emotions.joy * 100);
+                    myHotel[0].emotions.fear = Math.round(myHotel[0].emotions.fear * 100);
+                    myHotel[0].emotions.disgust = Math.round(myHotel[0].emotions.disgust * 100);
+                    myHotel[0].emotions.anger = Math.round(myHotel[0].emotions.anger * 100);
                     console.log(myHotel[0].emotions);
                     
                 //console.log(oneHotelInfo);
@@ -71,8 +78,8 @@ watsonRoutes.get('/:searchTerm/:id', (req, res, next) => {
             });
 
         } // end of checking ID
-        setTimeout(function () {myHotel[0].watson_sentiment = reviewAnalysis(myHotel[0].watson_sentiment)},950)
-        setTimeout(function () {res.json(myHotel);},1200)
+        setTimeout(function () {myHotel[0].watson_sentiment = reviewAnalysis(myHotel[0].watson_sentiment)},1500)
+        setTimeout(function () {res.json(myHotel);},1600)
         }) // end of axios
        
        
@@ -85,7 +92,7 @@ function reviewAnalysis(reviewsToAnalyze) {
     const negativePercentage = negativeReviews.length / reviewsToAnalyze.length;
     const neutralPercentage = neutralReviews.length / reviewsToAnalyze.length;
     const positivePercentage = (reviewsToAnalyze.length - (negativeReviews.length + neutralReviews.length)) / reviewsToAnalyze.length;
-    const analysis = [positivePercentage,negativePercentage,neutralPercentage];
+    const analysis = [Math.round(positivePercentage*100) ,Math.round(negativePercentage*100),Math.round(neutralPercentage*100)];
     return analysis;
 }
 module.exports = watsonRoutes;

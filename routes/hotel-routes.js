@@ -1,3 +1,4 @@
+
 const express     = require("express");
 const yelpRoutes  = express.Router();
 const request = require('request'); // needed for webscraping reviews
@@ -23,7 +24,7 @@ client.search({
   term: term,
   location: req.params.searchTerm,
   sort_by: "review_count",
-  limit: 1
+  limit: 3
 }).then(response => {
 
     console.log("there are "+response.jsonBody.businesses.length+" hotels")
@@ -85,7 +86,7 @@ client.search({
        
     });
     // give the scrape enough time to populate reviews, wait 3.5 seconds to load the page.
-    setTimeout(function () {res.json(hotelsInfo);  }, 3500)
+    setTimeout(function () {res.json(hotelsInfo);  }, 4700)
     
 }).catch(e => {
   console.log(e);
