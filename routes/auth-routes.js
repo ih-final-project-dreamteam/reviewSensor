@@ -3,6 +3,7 @@ const authRoutes  = express.Router();
 const passport    = require("passport");
 // User model
 const User        = require("../models/user");
+const Trip        = require("../models/trip");
 
 const flash       = require("connect-flash");
 
@@ -103,7 +104,7 @@ authRoutes.post('/login', (req, res, next) => {
 
 
 // LOGOUT
-authRoutes.post('/logout', (req, res, next) => {
+authRoutes.delete('/logout', (req, res, next) => {
   req.logout();
   res.status(200).json({ message: 'Success' });
 });
@@ -119,6 +120,19 @@ authRoutes.get('/loggedin', (req, res, next) => {
     res.status(403).json({ message: 'Unauthorized' });
 });
 
+
+authRoutes.get('/dashboard/:userId', (req, res, next) => {
+ 
+  setTimeout(function () {
+  Trip.find({userId: req.params.userId})
+  .then((listOfUserTrips)=>{
+    res.json(listOfUserTrips);
+  })
+  .catch((err)=>{
+    res.json(err)
+  })
+}, 200);
+});
 
 // function ensureAuthenticated(req, res, next) {
 //   if (req.isAuthenticated()) {

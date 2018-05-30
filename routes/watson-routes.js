@@ -2,9 +2,10 @@ const express = require("express");
 const watsonRoutes = express.Router();
 const axios = require("axios"); // used to call our own hotel list API
 
-watsonRoutes.get('/:searchTerm/:id', (req, res, next) => {
-    searchTerm = req.params.searchTerm;
-    hotelID = req.params.id;
+watsonRoutes.get('/:searchTerm/:price/:id', (req, res, next) => {
+    const searchTerm = req.params.searchTerm;
+    const price = req.params.price
+    const hotelID = req.params.id;
     var myHotel = [];
     console.log('inside route',hotelID,searchTerm)
     // declare watson NLU info
@@ -15,7 +16,7 @@ watsonRoutes.get('/:searchTerm/:id', (req, res, next) => {
         'version': '2018-03-16'
     });
     // make an axios get to our api
-    axios.get(`http://localhost:3000/yelp/${searchTerm}`)
+    axios.get(`http://localhost:3000/yelp/${searchTerm}/${price}`)
         .then(eachHotel => {
             // check ID for the one clicked
             myHotel = eachHotel.data.filter(oneHotel => oneHotel.id === hotelID)
@@ -72,14 +73,16 @@ watsonRoutes.get('/:searchTerm/:id', (req, res, next) => {
                     myHotel[0].emotions.disgust = Math.round(myHotel[0].emotions.disgust * 100);
                     myHotel[0].emotions.anger = Math.round(myHotel[0].emotions.anger * 100);
                     console.log(myHotel[0].emotions);
+
                     
                 //console.log(oneHotelInfo);
 
             });
 
         } // end of checking ID
-        setTimeout(function () {myHotel[0].watson_sentiment = reviewAnalysis(myHotel[0].watson_sentiment)},1500)
-        setTimeout(function () {res.json(myHotel);},1600)
+
+        setTimeout(function () {myHotel[0].watson_sentiment = reviewAnalysis(myHotel[0].watson_sentiment)},1100)
+        setTimeout(function () {res.json(myHotel);},1300)
         }) // end of axios
        
        
@@ -92,7 +95,7 @@ function reviewAnalysis(reviewsToAnalyze) {
     const negativePercentage = negativeReviews.length / reviewsToAnalyze.length;
     const neutralPercentage = neutralReviews.length / reviewsToAnalyze.length;
     const positivePercentage = (reviewsToAnalyze.length - (negativeReviews.length + neutralReviews.length)) / reviewsToAnalyze.length;
-    const analysis = [Math.round(positivePercentage*100) ,Math.round(negativePercentage*100),Math.round(neutralPercentage*100)];
+    const analysis = [Math.round(positivePercentage*100),Math.round(negativePercentage*100),Math.round(neutralPercentage*100)];
     return analysis;
 }
 module.exports = watsonRoutes;
