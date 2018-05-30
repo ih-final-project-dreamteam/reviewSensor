@@ -2,9 +2,10 @@ const express = require("express");
 const watsonRoutes = express.Router();
 const axios = require("axios"); // used to call our own hotel list API
 
-watsonRoutes.get('/:searchTerm/:id', (req, res, next) => {
-    searchTerm = req.params.searchTerm;
-    hotelID = req.params.id;
+watsonRoutes.get('/:searchTerm/:price/:id', (req, res, next) => {
+    const searchTerm = req.params.searchTerm;
+    const price = req.params.price
+    const hotelID = req.params.id;
     var myHotel = [];
     console.log('inside route',hotelID,searchTerm)
     // declare watson NLU info
@@ -15,7 +16,7 @@ watsonRoutes.get('/:searchTerm/:id', (req, res, next) => {
         'version': '2018-03-16'
     });
     // make an axios get to our api
-    axios.get(`http://localhost:3000/yelp/${searchTerm}`)
+    axios.get(`http://localhost:3000/yelp/${searchTerm}/${price}`)
         .then(eachHotel => {
             // check ID for the one clicked
             myHotel = eachHotel.data.filter(oneHotel => oneHotel.id === hotelID)
@@ -62,6 +63,8 @@ watsonRoutes.get('/:searchTerm/:id', (req, res, next) => {
 
                     // displays what watson feels on each review to terminal
                     //console.log(JSON.stringify(response, null, 2));
+                    // displays what watson feels on each review to terminal
+                    //console.log(JSON.stringify(response, null, 2));
                     myHotel[0].keywords = response.keywords;
                     myHotel[0].emotions = response.emotion.document.emotion;
                     myHotel[0].emotions.sadness = Math.round(myHotel[0].emotions.sadness * 100);
@@ -69,12 +72,21 @@ watsonRoutes.get('/:searchTerm/:id', (req, res, next) => {
                     myHotel[0].emotions.fear = Math.round(myHotel[0].emotions.fear * 100);
                     myHotel[0].emotions.disgust = Math.round(myHotel[0].emotions.disgust * 100);
                     myHotel[0].emotions.anger = Math.round(myHotel[0].emotions.anger * 100);
+<<<<<<< HEAD
+=======
+                    console.log(myHotel[0].emotions);
+
+>>>>>>> efb906f24f2313bb603f0959ef24dbadc0a58d36
                     
                 //console.log(oneHotelInfo);
 
             });
 
         } // end of checking ID
+<<<<<<< HEAD
+=======
+
+>>>>>>> efb906f24f2313bb603f0959ef24dbadc0a58d36
         setTimeout(function () {myHotel[0].watson_sentiment = reviewAnalysis(myHotel[0].watson_sentiment)},1100)
         setTimeout(function () {res.json(myHotel);},1300)
         }) // end of axios

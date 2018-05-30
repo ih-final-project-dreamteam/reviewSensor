@@ -1,29 +1,58 @@
+
 const express     = require("express");
 const yelpRoutes  = express.Router();
 const request = require('request'); // needed for webscraping reviews
 const cheerio = require('cheerio'); // needed for webscraping reviews
-
+// const twilio = require('twilio');
 
 //grab searchTerm from front end and pass into API 
-yelpRoutes.get('/:searchTerm',(req,res,next) => {
+yelpRoutes.get('/:searchTerm/:priceTerm',(req,res,next) => {
+var price = req.params.priceTerm.length
+var priceStr = ''
+for (var i = 1; i <= price; i++){
+   if (i === price) {
+    priceStr += i;
+   }
+   else {
+    priceStr += i+',';
+   }
+}
 
+// const accountSid = process.env.twilioKey; // Your Account SID from www.twilio.com/console
+// const authToken = process.env.twilioToken;   // Your Auth Token from www.twilio.com/console
+
+// const twilioClient = new twilio(accountSid, authToken);
+
+// twilioClient.messages.create({
+//     body: 'Hello from Node',
+//     from: '+15005550006', // From a valid Twilio number
+//     to: '+17867684353' // Text this number
+// })
+// .then((message) => console.log(message.sid))
+// .done();
 'use strict';
 
 const yelp = require('yelp-fusion');
  
-const client = yelp.client(process.env.apiKey);
+const yelpClient = yelp.client(process.env.apiKey);
 
 
 // when using the yelp API only search for hotels
 const term = "hotel";
 // array of objects to pass to json
 const hotelsInfo = [];
+
 // set parameters for yelp API search, response.jsonBody.businesses is an object of each hotel
-client.search({
+yelpClient.search({
   term: term,
   location: req.params.searchTerm,
   sort_by: "review_count",
+<<<<<<< HEAD
   limit: 3
+=======
+  limit: 5,
+  price: priceStr
+>>>>>>> efb906f24f2313bb603f0959ef24dbadc0a58d36
 }).then(response => {
 
     console.log("there are "+response.jsonBody.businesses.length+" hotels")
@@ -85,7 +114,11 @@ client.search({
        
     });
     // give the scrape enough time to populate reviews, wait 3.5 seconds to load the page.
+<<<<<<< HEAD
     setTimeout(function () {res.json(hotelsInfo);  },3500)
+=======
+    setTimeout(function () {res.json(hotelsInfo);  }, 3000)
+>>>>>>> efb906f24f2313bb603f0959ef24dbadc0a58d36
     
 }).catch(e => {
   console.log(e);
