@@ -7,6 +7,7 @@ const flash = require("connect-flash");
 
 
 const ensureLogin = require("connect-ensure-login");
+
 crudRoutes.post('/create/trip', (req, res, next) => {
   req.body.startDate = new Date(req.body.startDate);
   req.body.endDate = new Date(req.body.endDate);
@@ -26,16 +27,16 @@ crudRoutes.post(`/trip/update/:tripId`, (req, res, next) => {
 
   Trip.findByIdAndUpdate(req.params.tripId, req.body)
     .then((updatedTrip) => {
-      var testDate = new Date(req.body.startDate);
-      console.log(testDate);
+      var tripStartDate = new Date(req.body.startDate);
+      console.log(tripStartDate);
       var today = new Date();
       today.setDate(today.getDate() -1);
       // testDate.setDate(testDate.getDate() - 2);
       console.log('dfdsafdsfdsafdasdfsdfsafmdsamdmdmsddmssdmsdmdsmssmdmsadmdsmsmsadmsdmsasmdsmssm')
-      console.log('ashdashhasdfaksdfhadahsjfadshjfkhajsdf',testDate);
+      console.log('ashdashhasdfaksdfhadahsjfadshjfkhajsdf',tripStartDate);
       console.log('today: ', today);
-      console.log('check if tru', (today <= testDate));
-      if (today <= testDate) {
+      console.log('check if tru', (today <= tripStartDate));
+      if (tripStartDate.setDate(tripStartDate.getDate() - 2) <= today) {
         const accountSid = process.env.twilioSid; // Your Account SID from www.twilio.com/console
         const authToken = process.env.twilioToken;   // Your Auth Token from www.twilio.com/console
         const client = require('twilio')(accountSid, authToken);

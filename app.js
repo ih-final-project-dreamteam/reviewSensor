@@ -22,7 +22,7 @@ const cors           = require('cors');
 
 mongoose.Promise = Promise;
 mongoose
-  .connect('mongodb://localhost/reviewSensor', {useMongoClient: true})
+  .connect(process.env.MONGODB_URI, {useMongoClient: true})
   .then(() => {
     console.log('Connected to Mongo!')
   }).catch(err => {
@@ -118,5 +118,9 @@ const watsonRoute = require('./routes/watson-routes')
 app.use('/watson', watsonRoute);
 const crudRoute = require('./routes/crud-routes')
 app.use('/crud', crudRoute);
+
+app.use((req, res, next) => {
+  res.sendfile(__dirname + `/public/user/index.html`);
+});
 
 module.exports = app;
