@@ -63,8 +63,6 @@ watsonRoutes.get('/:searchTerm/:price/:id', (req, res, next) => {
 
                     // displays what watson feels on each review to terminal
                     //console.log(JSON.stringify(response, null, 2));
-                    // displays what watson feels on each review to terminal
-                    //console.log(JSON.stringify(response, null, 2));
                     myHotel[0].keywords = response.keywords;
                     myHotel[0].emotions = response.emotion.document.emotion;
                     myHotel[0].emotions.sadness = Math.round(myHotel[0].emotions.sadness * 100);
