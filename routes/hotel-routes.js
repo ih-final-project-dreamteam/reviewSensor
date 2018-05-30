@@ -47,12 +47,8 @@ yelpClient.search({
   term: term,
   location: req.params.searchTerm,
   sort_by: "review_count",
-<<<<<<< HEAD
-  limit: 3
-=======
   limit: 5,
   price: priceStr
->>>>>>> efb906f24f2313bb603f0959ef24dbadc0a58d36
 }).then(response => {
 
     console.log("there are "+response.jsonBody.businesses.length+" hotels")
@@ -114,11 +110,7 @@ yelpClient.search({
        
     });
     // give the scrape enough time to populate reviews, wait 3.5 seconds to load the page.
-<<<<<<< HEAD
-    setTimeout(function () {res.json(hotelsInfo);  },3500)
-=======
     setTimeout(function () {res.json(hotelsInfo);  }, 3000)
->>>>>>> efb906f24f2313bb603f0959ef24dbadc0a58d36
     
 }).catch(e => {
   console.log(e);
