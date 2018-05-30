@@ -72,15 +72,21 @@ watsonRoutes.get('/:searchTerm/:price/:id', (req, res, next) => {
                     myHotel[0].emotions.fear = Math.round(myHotel[0].emotions.fear * 100);
                     myHotel[0].emotions.disgust = Math.round(myHotel[0].emotions.disgust * 100);
                     myHotel[0].emotions.anger = Math.round(myHotel[0].emotions.anger * 100);
+<<<<<<< HEAD
+=======
                     console.log(myHotel[0].emotions);
 
+>>>>>>> efb906f24f2313bb603f0959ef24dbadc0a58d36
                     
                 //console.log(oneHotelInfo);
 
             });
 
         } // end of checking ID
+<<<<<<< HEAD
+=======
 
+>>>>>>> efb906f24f2313bb603f0959ef24dbadc0a58d36
         setTimeout(function () {myHotel[0].watson_sentiment = reviewAnalysis(myHotel[0].watson_sentiment)},1100)
         setTimeout(function () {res.json(myHotel);},1300)
         }) // end of axios
