@@ -72,8 +72,6 @@ watsonRoutes.get('/:searchTerm/:price/:id', (req, res, next) => {
                     myHotel[0].emotions.fear = Math.round(myHotel[0].emotions.fear * 100);
                     myHotel[0].emotions.disgust = Math.round(myHotel[0].emotions.disgust * 100);
                     myHotel[0].emotions.anger = Math.round(myHotel[0].emotions.anger * 100);
-                    console.log(myHotel[0].emotions);
-
                     
                 //console.log(oneHotelInfo);
 

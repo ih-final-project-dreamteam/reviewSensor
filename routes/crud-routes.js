@@ -1,10 +1,12 @@
-const express = require("express");
-const crudRoutes = express.Router();
-const passport = require("passport");
-const User = require("../models/user");
-const Trip = require("../models/trip");
-const flash = require("connect-flash");
+const express     = require("express");
+const crudRoutes  = express.Router();
+const passport    = require("passport");
+const User        = require("../models/user");
+const Trip        = require("../models/trip");
+const flash       = require("connect-flash");
+
 const ensureLogin = require("connect-ensure-login");
+
 
 crudRoutes.post('/create/trip', (req, res, next) => {
   req.body.startDate = new Date(req.body.startDate);
@@ -12,7 +14,6 @@ crudRoutes.post('/create/trip', (req, res, next) => {
   req.body.startDate.setDate(req.body.startDate.getDate() + 1)
   req.body.endDate.setDate(req.body.endDate.getDate() + 1)
   const newTrip = new Trip(req.body);
-
   newTrip.save((err) => {
     if (err) {
       res.status(400).json({ message: 'Something went wrong' });
@@ -63,6 +64,6 @@ crudRoutes.post(`/trip/delete/:tripId`, (req, res, next) => {
   .catch((err) => {
     res.json(err);
   })
-})
+});
 
 module.exports = crudRoutes;
