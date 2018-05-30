@@ -104,7 +104,7 @@ authRoutes.post('/login', (req, res, next) => {
 
 
 // LOGOUT
-authRoutes.post('/logout', (req, res, next) => {
+authRoutes.delete('/logout', (req, res, next) => {
   req.logout();
   res.status(200).json({ message: 'Success' });
 });
