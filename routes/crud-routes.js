@@ -1,13 +1,12 @@
-const express     = require("express");
-const crudRoutes  = express.Router();
-const passport    = require("passport");
-const User        = require("../models/user");
-const Trip        = require("../models/trip");
-const flash       = require("connect-flash");
+const express = require("express");
+const crudRoutes = express.Router();
+const passport = require("passport");
+const User = require("../models/user");
+const Trip = require("../models/trip");
+const flash = require("connect-flash");
+
 
 const ensureLogin = require("connect-ensure-login");
-
-
 crudRoutes.post('/create/trip', (req, res, next) => {
   req.body.startDate = new Date(req.body.startDate);
   req.body.endDate = new Date(req.body.endDate);
@@ -22,8 +21,8 @@ crudRoutes.post('/create/trip', (req, res, next) => {
   });
 
 });
-
 crudRoutes.post(`/trip/update/:tripId`, (req, res, next) => {
+
 
   Trip.findByIdAndUpdate(req.params.tripId, req.body)
     .then((updatedTrip) => {
@@ -54,16 +53,6 @@ crudRoutes.post(`/trip/update/:tripId`, (req, res, next) => {
     res.json(err)
   })  
 
-});
-
-crudRoutes.post(`/trip/delete/:tripId`, (req, res, next) => {
-  Trip.findByIdAndRemove(req.params.tripId)
-  .then((deletedTask) => {
-    res.json(deletedTask);
-  })
-  .catch((err) => {
-    res.json(err);
-  })
 });
 
 module.exports = crudRoutes;
