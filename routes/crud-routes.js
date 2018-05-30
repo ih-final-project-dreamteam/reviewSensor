@@ -22,8 +22,8 @@ crudRoutes.post('/create/trip', (req, res, next) => {
   });
 
 });
-crudRoutes.post(`/trip/update/:tripId`, (req, res, next) => {
 
+crudRoutes.post(`/trip/update/:tripId`, (req, res, next) => {
 
   Trip.findByIdAndUpdate(req.params.tripId, req.body)
     .then((updatedTrip) => {
@@ -55,7 +55,6 @@ crudRoutes.post(`/trip/update/:tripId`, (req, res, next) => {
   })  
 
 });
-
 
 crudRoutes.post(`/trip/delete/:tripId`, (req, res, next) => {
   Trip.findByIdAndRemove(req.params.tripId)
