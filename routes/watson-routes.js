@@ -63,6 +63,8 @@ watsonRoutes.get('/:searchTerm/:price/:id', (req, res, next) => {
 
                     // displays what watson feels on each review to terminal
                     //console.log(JSON.stringify(response, null, 2));
+                    // displays what watson feels on each review to terminal
+                    //console.log(JSON.stringify(response, null, 2));
                     myHotel[0].keywords = response.keywords;
                     myHotel[0].emotions = response.emotion.document.emotion;
                     myHotel[0].emotions.sadness = Math.round(myHotel[0].emotions.sadness * 100);
@@ -70,12 +72,15 @@ watsonRoutes.get('/:searchTerm/:price/:id', (req, res, next) => {
                     myHotel[0].emotions.fear = Math.round(myHotel[0].emotions.fear * 100);
                     myHotel[0].emotions.disgust = Math.round(myHotel[0].emotions.disgust * 100);
                     myHotel[0].emotions.anger = Math.round(myHotel[0].emotions.anger * 100);
+                    console.log(myHotel[0].emotions);
+
                     
                 //console.log(oneHotelInfo);
 
             });
 
         } // end of checking ID
+
         setTimeout(function () {myHotel[0].watson_sentiment = reviewAnalysis(myHotel[0].watson_sentiment)},1100)
         setTimeout(function () {res.json(myHotel);},1300)
         }) // end of axios
