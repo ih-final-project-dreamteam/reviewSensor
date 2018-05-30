@@ -55,4 +55,14 @@ crudRoutes.post(`/trip/update/:tripId`, (req, res, next) => {
 
 });
 
+crudRoutes.post(`/trip/delete/:tripId`, (req, res, next) => {
+  Trip.findByIdAndRemove(req.params.tripId)
+  .then((deletedTask) => {
+    res.json(deletedTask);
+  })
+  .catch((err) => {
+    res.json(err);
+  })
+})
+
 module.exports = crudRoutes;
