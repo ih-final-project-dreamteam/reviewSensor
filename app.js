@@ -22,7 +22,7 @@ const cors           = require('cors');
 
 mongoose.Promise = Promise;
 mongoose
-  .connect('mongodb://localhost/reviewSensor', {useMongoClient: true})
+  .connect(process.env.MONGODB_URI, {useMongoClient: true})
   .then(() => {
     console.log('Connected to Mongo!')
   }).catch(err => {
@@ -49,7 +49,7 @@ app.use(require('node-sass-middleware')({
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
-app.use(express.static("path.join(__dirname, '/public')"));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 // default value for title local
 app.locals.title = 'Express - Generated with IronGenerator';
@@ -98,16 +98,17 @@ app.use(passport.session());
 // app.use(cors());
 
 
+// app.use(cors());
 app.use(
   cors({
     credentials: true,                 // allow other domains to send cookies
-    origin: ["http://localhost:4200"]  // these are the domains that are allowed
+    origin: ["http://localhost:4200", "https://reviewsensor.herokuapp.com"]  // these are the domains that are allowed
   })
 );
 
 
-const index = require('./routes/index');
-app.use('/', index);
+// const index = require('./routes/index');
+// app.use('/', index);
 
 const authRoute = require('./routes/auth-routes')
 app.use('/api', authRoute);
@@ -118,5 +119,9 @@ const watsonRoute = require('./routes/watson-routes')
 app.use('/watson', watsonRoute);
 const crudRoute = require('./routes/crud-routes')
 app.use('/crud', crudRoute);
+
+app.use((req, res, next) => {
+  res.sendFile(__dirname + '/public/index.html');
+});
 
 module.exports = app;
