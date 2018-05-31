@@ -106,8 +106,8 @@ app.use(
 );
 
 
-const index = require('./routes/index');
-app.use('/', index);
+// const index = require('./routes/index');
+// app.use('/', index);
 
 const authRoute = require('./routes/auth-routes')
 app.use('/api', authRoute);
