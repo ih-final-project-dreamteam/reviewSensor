@@ -81,8 +81,8 @@ watsonRoutes.get('/:searchTerm/:price/:id', (req, res, next) => {
 
         } // end of checking ID
 
-        setTimeout(function () {myHotel[0].watson_sentiment = reviewAnalysis(myHotel[0].watson_sentiment)},1100)
-        setTimeout(function () {res.json(myHotel);},1300)
+        setTimeout(function () {myHotel[0].watson_sentiment = reviewAnalysis(myHotel[0].watson_sentiment)},2000)
+        setTimeout(function () {res.json(myHotel);}, 2000)
         }) // end of axios
        
        
