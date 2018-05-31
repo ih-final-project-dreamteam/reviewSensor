@@ -98,13 +98,13 @@ app.use(passport.session());
 // app.use(cors());
 
 
-app.use(cors());
-// app.use(
-//   cors({
-//     credentials: true,                 // allow other domains to send cookies
-//     origin: ["http://localhost:4200"]  // these are the domains that are allowed
-//   })
-// );
+// app.use(cors());
+app.use(
+  cors({
+    credentials: true,                 // allow other domains to send cookies
+    origin: ["http://localhost:4200"]  // these are the domains that are allowed
+  })
+);
 
 
 // const index = require('./routes/index');
