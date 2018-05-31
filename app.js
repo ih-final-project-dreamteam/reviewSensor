@@ -120,7 +120,7 @@ const crudRoute = require('./routes/crud-routes')
 app.use('/crud', crudRoute);
 
 app.use((req, res, next) => {
-  res.sendfile(__dirname + `/public/user/index.html`);
+  res.sendfile(__dirname + `/public/index.html`);
 });
 
 module.exports = app;
