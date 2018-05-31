@@ -7,6 +7,7 @@ const cheerio = require('cheerio'); // needed for webscraping reviews
 //grab searchTerm from front end and pass into API 
 yelpRoutes.get('/:searchTerm/:priceTerm',(req,res,next) => {
 var price = req.params.priceTerm.length
+console.log(price)
 var priceStr = ''
 for (var i = 1; i <= price; i++){
    if (i === price) {
@@ -17,6 +18,7 @@ for (var i = 1; i <= price; i++){
    }
 }
 
+console.log(priceStr);
 // const accountSid = process.env.twilioKey; // Your Account SID from www.twilio.com/console
 // const authToken = process.env.twilioToken;   // Your Auth Token from www.twilio.com/console
 
@@ -109,7 +111,7 @@ yelpClient.search({
        
     });
     // give the scrape enough time to populate reviews, wait 3.5 seconds to load the page.
-    setTimeout(function () {res.json(hotelsInfo);  }, 3700)
+    setTimeout(function () {res.json(hotelsInfo);  }, 3500)
     
 }).catch(e => {
   console.log(e);
