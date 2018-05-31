@@ -98,12 +98,13 @@ app.use(passport.session());
 // app.use(cors());
 
 
-app.use(
-  cors({
-    credentials: true,                 // allow other domains to send cookies
-    origin: ["http://localhost:4200"]  // these are the domains that are allowed
-  })
-);
+app.use(cors());
+// app.use(
+//   cors({
+//     credentials: true,                 // allow other domains to send cookies
+//     origin: ["http://localhost:4200"]  // these are the domains that are allowed
+//   })
+// );
 
 
 // const index = require('./routes/index');
@@ -120,7 +121,7 @@ const crudRoute = require('./routes/crud-routes')
 app.use('/crud', crudRoute);
 
 app.use((req, res, next) => {
-  res.sendfile(__dirname + `/public/index.html`);
+  res.sendfile(__dirname + `/index.html`);
 });
 
 module.exports = app;
