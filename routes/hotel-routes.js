@@ -111,7 +111,7 @@ yelpClient.search({
        
     });
     // give the scrape enough time to populate reviews, wait 3.5 seconds to load the page.
-    setTimeout(function () {res.json(hotelsInfo);  }, 2500)
+    setTimeout(function () {res.json(hotelsInfo);  }, 3800)
     
 }).catch(e => {
   console.log(e);
