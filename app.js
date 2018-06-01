@@ -102,7 +102,7 @@ app.use(passport.session());
 app.use(
   cors({
     credentials: true,                 // allow other domains to send cookies
-    origin: ["localhost:4200"]  // these are the domains that are allowed
+    origin: ["localhost:4200", "reviewsensor.herokuapp.com"]  // these are the domains that are allowed
   })
 );
 
