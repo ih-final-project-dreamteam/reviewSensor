@@ -71,8 +71,8 @@ watsonRoutes.post('/:searchTerm/:price/:id', (req, res, next) => {
 
             });
 
-        setTimeout(function () {myHotel.watson_sentiment = reviewAnalysis(myHotel.watson_sentiment)},2000)
-        setTimeout(function () {res.json(myHotel);},2500)
+        setTimeout(function () {myHotel.watson_sentiment = reviewAnalysis(myHotel.watson_sentiment)},1000)
+        setTimeout(function () {res.json(myHotel);},2000)
         
        
        
