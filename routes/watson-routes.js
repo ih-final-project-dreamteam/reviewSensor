@@ -2,11 +2,13 @@ const express = require("express");
 const watsonRoutes = express.Router();
 const axios = require("axios"); // used to call our own hotel list API
 
-watsonRoutes.get('/:searchTerm/:price/:id', (req, res, next) => {
+watsonRoutes.post('/:searchTerm/:price/:id', (req, res, next) => {
+    console.log('watsonroute:', req.body);
     const searchTerm = req.params.searchTerm;
     const price = req.params.price
+    console.log('watson',price)
     const hotelID = req.params.id;
-    var myHotel = [];
+    var myHotel = Object.assign({},req.body);
     console.log('inside route',hotelID,searchTerm)
     // declare watson NLU info
     var NaturalLanguageUnderstandingV1 = require('watson-developer-cloud/natural-language-understanding/v1.js');
@@ -15,15 +17,9 @@ watsonRoutes.get('/:searchTerm/:price/:id', (req, res, next) => {
         "password": process.env.password,
         'version': '2018-03-16'
     });
-    // make an axios get to our api
-    axios.get(`http://localhost:3000/yelp/${searchTerm}/${price}`)
-        .then(eachHotel => {
-            // check ID for the one clicked
-            myHotel = eachHotel.data.filter(oneHotel => oneHotel.id === hotelID)
-            
-            if (myHotel){
+   
             // loop through reviews to pass to watson and retrieve sentiment of each.
-            myHotel[0].reviews.forEach(oneReview => {
+            myHotel.reviews.forEach(oneReview => {
                 var parameters = {
                     'text': oneReview,
                     'features': {
@@ -38,7 +34,7 @@ watsonRoutes.get('/:searchTerm/:price/:id', (req, res, next) => {
 
                         // displays what watson feels on each review to terminal
                         //console.log(JSON.stringify(response, null, 2));
-                        myHotel[0].watson_sentiment.push(response.sentiment.document.label);
+                       myHotel.watson_sentiment.push(response.sentiment.document.label);
                         
                     //console.log(oneHotelInfo);
 
@@ -47,7 +43,7 @@ watsonRoutes.get('/:searchTerm/:price/:id', (req, res, next) => {
                
 
             }); // end of reviews forEach
-            const consolidatedReview = myHotel[0].reviews.join(' ');
+            const consolidatedReview = myHotel.reviews.join(' ');
             var parameters = {
                 'text': consolidatedReview,
                 'features': {
@@ -63,22 +59,21 @@ watsonRoutes.get('/:searchTerm/:price/:id', (req, res, next) => {
 
                     // displays what watson feels on each review to terminal
                     //console.log(JSON.stringify(response, null, 2));
-                    myHotel[0].keywords = response.keywords;
-                    myHotel[0].emotions = response.emotion.document.emotion;
-                    myHotel[0].emotions.sadness = Math.round(myHotel[0].emotions.sadness * 100);
-                    myHotel[0].emotions.joy = Math.round(myHotel[0].emotions.joy * 100);
-                    myHotel[0].emotions.fear = Math.round(myHotel[0].emotions.fear * 100);
-                    myHotel[0].emotions.disgust = Math.round(myHotel[0].emotions.disgust * 100);
-                    myHotel[0].emotions.anger = Math.round(myHotel[0].emotions.anger * 100);
+                    myHotel.keywords = response.keywords;
+                    myHotel.emotions = response.emotion.document.emotion;
+                    myHotel.emotions.sadness = Math.round(myHotel.emotions.sadness * 100);
+                    myHotel.emotions.joy = Math.round(myHotel.emotions.joy * 100);
+                    myHotel.emotions.fear = Math.round(myHotel.emotions.fear * 100);
+                    myHotel.emotions.disgust = Math.round(myHotel.emotions.disgust * 100);
+                    myHotel.emotions.anger = Math.round(myHotel.emotions.anger * 100);
                     
-                //console.log(oneHotelInfo);
+                console.log(myHotel);
 
             });
 
-        } // end of checking ID
-        setTimeout(function () {myHotel[0].watson_sentiment = reviewAnalysis(myHotel[0].watson_sentiment)},1100)
-        setTimeout(function () {res.json(myHotel);},1300)
-        }) // end of axios
+        setTimeout(function () {myHotel.watson_sentiment = reviewAnalysis(myHotel.watson_sentiment)},1400)
+        setTimeout(function () {res.json(myHotel);},1500)
+        
        
        
  
